@@ -170,7 +170,15 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
+        if not parameters:  # Check if kwargs is None
+            new_instance = HBNBCommand.classes[class_name]()
+            storage.new(new_instance)
+            print(new_instance.id)
+            storage.save()
+            return
+
         kwargs = self.key_value_parser(parameters)
+
         new_instance = HBNBCommand.classes[class_name](**kwargs)
         storage.new(new_instance)
         print(new_instance.id)
