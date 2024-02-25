@@ -5,6 +5,11 @@ from os.path import isfile, basename
 """
 Fabric script based on the file 1-pack_web_static.py that distributes an
 archive to the web servers
+
+fab -f 1-pack_web_static.py do_pack
+fab -f 2-do_deploy_web_static.py
+do_deploy:archive_path=versions/web_static_20240225133151.tgz
+-i my_ssh_private_key -u ubuntu
 """
 
 from fabric.api import put, run, env
