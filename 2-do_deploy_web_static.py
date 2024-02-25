@@ -39,7 +39,7 @@ def do_deploy(archive_path):
         run(f"tar -xvzf /tmp/{filename}.tgz -C {path}{filename}")
 
         print(f"Moving files to {path}{filename}")
-        run(f"mv /{path}{filename}/web_static/* {path}{filename}")
+        run(f"mv {path}{filename}/web_static/* {path}{filename}")
 
         print(f"Removing archive file /tmp/{filename}.tgz")
         run(f"rm /tmp/{filename}.tgz")

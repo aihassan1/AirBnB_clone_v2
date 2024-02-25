@@ -3,10 +3,10 @@
 sudo apt-get update
 sudo apt-get -y install nginx
 
-mkdir -p /data/web_static/releases/test/
-mkdir -p /data/web_static/shared/
+sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/
 
-echo '<html>
+sudo echo '<html>
   <head>
   </head>
   <body>
