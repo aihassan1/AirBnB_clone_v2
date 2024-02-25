@@ -22,7 +22,7 @@ sudo chown -hR ubuntu:ubuntu /data/
 
 # Add new location block to NGINX configuration
 
-sudo sed -i '11 i \\n\tlocation /hbnb_static {\n\talias /data/web_static/current;\n\t}' /etc/nginx/sites-available/default
+sudo sed -i '51 i \\n\tlocation /hbnb_static {\n\talias /data/web_static/current;\n\t}' /etc/nginx/sites-available/default
 
 # Restart NGINX to apply the changes
 sudo service nginx restart
