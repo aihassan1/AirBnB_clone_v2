@@ -1,49 +1,56 @@
 #!/usr/bin/python3
-# Fabfile to distribute an archive to a web server.
-import os.path
-from fabric.api import env
-from fabric.api import put
-from fabric.api import run
+from fabric.api import put, env, run, local
+from os.path import isdir, islink, isfile
+from os import unlink, symlink
+from os.path import basename
+from datetime import datetime
+"""
+Fabric script based on the file 1-pack_web_static.py that distributes an
+archive to the web servers
+"""
 
-env.hosts = ["18.210.14.47", "54.157.179.130"]
-
+from fabric.api import put, run, env
+from os.path import exists
+env.hosts = ['142.44.167.228', '144.217.246.195']
 
 def do_deploy(archive_path):
-    """Distributes an archive to a web server.
+    """Distributes an archive to your web servers"""
+    if isfile(archive_path) is False:
+        print("Archive file does not exist.")
+        return False
 
-    Args:
-        archive_path (str): The path of the archive to distribute.
-    Returns:
-        If the file doesn't exist at archive_path or an error occurs - False.
-        Otherwise - True.
-    """
-    if os.path.isfile(archive_path) is False:
-        return False
-    file = archive_path.split("/")[-1]
-    name = file.split(".")[0]
+    filename = basename(archive_path)
+    filename = filename.replace(".tgz", "")
+    print(f"Deploying {filename}")
 
-    if put(archive_path, "/tmp/{}".format(file)).failed is True:
+    try:
+        path = "/data/web_static/releases/"
+        print(f"Creating directory {path}{filename}")
+        put(archive_path, "/tmp/")
+        print(f"Uploaded {archive_path} to /tmp/")
+
+        run(f"mkdir -p {path}{filename}")
+        print(f"Extracting archive to {path}{filename}")
+        run(f"tar -xvzf /tmp/{filename} -C {path}{filename}")
+
+        print(f"Moving files to {path}{filename}")
+        run(f"mv /{path}{filename}/web_static/* {path}{filename}")
+
+        print(f"Removing archive file /tmp/{filename}.tgz")
+        run(f"rm /tmp/{filename}.tgz")
+
+        print(f"Removing old web_static directory")
+        run(f"rm -rf {path}{filename}/web_static")
+
+        print("Removing old symbolic link")
+        run("rm -rf /data/web_static/current")
+
+        print("Creating new symbolic link")
+        run(f"ln -s {path}{filename}/ /data/web_static/current ")
+
+        print("Deployment completed successfully.")
+        return True
+
+    except Exception as e:
+        print(f"Error during deployment: {e}")
         return False
-    if run("rm -rf /data/web_static/releases/{}/".
-           format(name)).failed is True:
-        return False
-    if run("mkdir -p /data/web_static/releases/{}/".
-           format(name)).failed is True:
-        return False
-    if run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".
-           format(file, name)).failed is True:
-        return False
-    if run("rm /tmp/{}".format(file)).failed is True:
-        return False
-    if run("mv /data/web_static/releases/{}/web_static/* "
-           "/data/web_static/releases/{}/".format(name, name)).failed is True:
-        return False
-    if run("rm -rf /data/web_static/releases/{}/web_static".
-           format(name)).failed is True:
-        return False
-    if run("rm -rf /data/web_static/current").failed is True:
-        return False
-    if run("ln -s /data/web_static/releases/{}/ /data/web_static/current".
-           format(name)).failed is True:
-        return False
-    return True
