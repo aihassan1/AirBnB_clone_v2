@@ -43,7 +43,7 @@ def do_deploy(archive_path):
 
 
         for server in env.hosts:
-            put(archive_path, destination, host=server, mirror_local_mode=True)
+            put(archive_path, destination, host=server)
             run(f"tar -xvzf /tmp/{filename} -C /data/web_static/releases/")
             run(f"rm {destination}/{filename}.tgz")
 
