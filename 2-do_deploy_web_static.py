@@ -28,6 +28,7 @@ def do_deploy(archive_path):
         put(archive_path, "/tmp/")
 
         run(f"mkdir -p {path}{filename}")
+
         run(f"tar -xvzf /tmp/{filename}.tgz -C {path}{filename}")
 
         run(f"mv {path}{filename}/web_static/* {path}{filename}")
