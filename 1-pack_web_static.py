@@ -10,7 +10,7 @@ def do_pack():
     formatted_time = result.strip()
     local("mkdir -p versions")
     output = local(
-        f"tar -czvf versions/web_static_{formatted_time}.tgz versions/web_static"
+        f"tar -czvf web_static_{formatted_time}.tgz versions/web_static"
     )
     if output.succeeded:
         return f"versions/web_static_{formatted_time}.tgz"
