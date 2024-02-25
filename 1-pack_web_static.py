@@ -8,10 +8,9 @@ def do_pack():
 
     result = local("date +%Y%m%d%H%M%S", capture=True)
     formatted_time = result.strip()
-    local("mkdir -p versions")
-    output = local(
-        f"tar -czvf web_static_{formatted_time}.tgz versions/web_static"
-    )
+
+    local("mkdir versions")
+    output = local(f"tar -czvf versions/web_static_{formatted_time}.tgz web_static")
     if output.succeeded:
         return f"versions/web_static_{formatted_time}.tgz"
     else:
