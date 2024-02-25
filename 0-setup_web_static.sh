@@ -17,4 +17,4 @@ sudo chown -hR ubuntu:ubuntu /data/
 sudo sed -i '11 i \\n\tlocation /hbnb_static {\n\talias /data/web_static/current;\n\t}' /etc/nginx/sites-available/default
 
 # Restart NGINX to apply the changes
-sudo service restart nginx
+sudo service nginx restart
