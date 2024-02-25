@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # configer the server to be ready for deployment
 sudo apt-get -y update
-sudo apt-get -y upgrade
 sudo apt-get -y install nginx
 
 sudo mkdir -p /data/web_static/{releases,shared}
