@@ -6,6 +6,14 @@ sudo apt-get -y install nginx
 mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
 
+echo '<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>' >/data/web_static/releases/test/index.html
+
 # create a new symbolic link
 sudo ln -sf /data/web_static/releases/test /data/web_static/current
 
