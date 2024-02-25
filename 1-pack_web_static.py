@@ -15,7 +15,7 @@ def do_pack():
 
     filename = f"versions/web_static_{formatted_time}.tgz"
 
-    output = local(f"tar -czvf {filename} web_static")
+    output = local(f"tar -czvf {filename} web_static", capture=True)
     if output.succeeded:
         return filename
     else:
