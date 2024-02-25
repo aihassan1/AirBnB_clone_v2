@@ -4,6 +4,7 @@ from os.path import isdir, islink, isfile
 from os import unlink, symlink
 from os.path import basename
 from datetime import datetime
+
 """
 Fabric script based on the file 1-pack_web_static.py that distributes an
 archive to the web servers
@@ -11,7 +12,11 @@ archive to the web servers
 
 from fabric.api import put, run, env
 from os.path import exists
-env.hosts = ['142.44.167.228', '144.217.246.195']
+
+env.hosts = ["18.210.14.47", "54.157.179.130"]
+# env.user = "ubuntu"
+# env.key_filename = "~/.ssh/id_rsa"
+
 
 def do_deploy(archive_path):
     """Distributes an archive to your web servers"""
