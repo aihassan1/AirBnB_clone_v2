@@ -1,40 +1,30 @@
 #!/usr/bin/python3
-from fabric.api import put, env, run, local
-from os.path import isdir, islink, isfile
-from os import unlink, symlink
-from os.path import basename
-from datetime import datetime
+"""
+Fabric script based on the file 1-pack_web_static.py that distributes an
+archive to the web servers
+"""
 
-env.hosts = ["18.210.14.47", "54.157.179.130"]
-env.user = "ubuntu"
-env.key_filename = "~/.ssh/id_rsa"
+from fabric.api import put, run, env
+from os.path import exists
+env.hosts = ['142.44.167.228', '144.217.246.195']
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to your web servers"""
-    if isfile(archive_path) is False:
+    """distributes an archive to the web servers"""
+    if exists(archive_path) is False:
         return False
-
-    filename = basename(archive_path)
-    filename = filename.replace(".tgz", "")
-    print(f"{filename}")
-
     try:
-
+        file_n = archive_path.split("/")[-1]
+        no_ext = file_n.split(".")[0]
         path = "/data/web_static/releases/"
-        print(f"path {path}")
-
-        put(archive_path, "/tmp/")
-        run(f"mkdir -p {path}{filename}")
-        run(f"tar -xvzf /tmp/{filename} -C {path}{filename}")
-        run(f"mv /{path}{filename}/web_static/* {path}{filename}")
-        run(f"rm /tmp/{filename}.tgz")
-
-        run(f"rm -rf {path}{filename}/web_static")
-        run(f"rm -rf /data/web_static/current")
-        run("ln -s {path}{filename}/ /data/web_static/current ")
-
+        put(archive_path, '/tmp/')
+        run('mkdir -p {}{}/'.format(path, no_ext))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
+        run('rm /tmp/{}'.format(file_n))
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
+        run('rm -rf {}{}/web_static'.format(path, no_ext))
+        run('rm -rf /data/web_static/current')
+        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
-
-    except Exception as e:
+    except:
         return False
