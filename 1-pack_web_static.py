@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from fabric.api import task, local
+from os.path import isdir
 
 
 @task
@@ -9,9 +10,13 @@ def do_pack():
     result = local("date +%Y%m%d%H%M%S", capture=True)
     formatted_time = result.strip()
 
-    local("mkdir versions")
-    output = local(f"tar -czvf versions/web_static_{formatted_time}.tgz web_static")
+    if isdir("versions") is False:
+        local("mkdir versions")
+
+    filename = f"versions/web_static_{formatted_time}.tgz"
+
+    output = local(f"tar -czvf {filename} web_static")
     if output.succeeded:
-        return f"versions/web_static_{formatted_time}.tgz"
+        return filename
     else:
         return None
