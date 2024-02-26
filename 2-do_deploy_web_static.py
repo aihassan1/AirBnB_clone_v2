@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from fabric.api import put, run, env
+from fabric.api import put, run, env, task
 from os.path import isfile, basename
 
 """
@@ -20,6 +20,7 @@ env.user = "ubuntu"
 env.key_filename = "~/.ssh/id_rsa"
 
 
+@task
 def do_deploy(archive_path):
     """Distributes an archive to your web servers"""
     if isfile(archive_path) is False:
