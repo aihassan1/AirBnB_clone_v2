@@ -26,6 +26,7 @@ env.user = "ubuntu"
 env.key_filename = "~/.ssh/id_rsa"
 
 
+@task
 def do_deploy(archive_path):
     """Distributes an archive to your web servers"""
     if isfile(archive_path) is False:
@@ -58,6 +59,7 @@ def do_deploy(archive_path):
         return False
 
 
+@task
 def deploy():
     """deploy to server"""
     tgz_file_path = do_pack()
@@ -65,3 +67,4 @@ def deploy():
         return False
     else:
         return do_deploy(tgz_file_path)
+
