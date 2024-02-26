@@ -3,7 +3,8 @@ from fabric.api import task, local
 from os.path import isdir
 from datetime import datetime
 
-# fab -f 1-pack_web_static.py do_pack 
+# fab -f 1-pack_web_static.py do_pack
+
 
 @task
 def do_pack():
