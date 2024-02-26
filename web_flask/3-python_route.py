@@ -29,11 +29,14 @@ def c_is_fun(text):
 @app.route("/python/<text>", strict_slashes=False)
 def python_is_cool(text):
     """returns python + text"""
-    if not text:
-        text = "is cool"
-    else:
-        text = text.replace("_", " ")
+    text = text.replace("_", " ")
     return f"Python {text}"
+
+
+@app.route("/python", strict_slashes=False)
+def python_default():
+    """returns default python message"""
+    return "Python is cool"
 
 
 if __name__ == "__main__":
