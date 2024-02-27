@@ -29,9 +29,7 @@ class DBStorage:
         mysql_database = getenv("HBNB_MYSQL_DB")
 
         # Create the database connection URI
-        db_uri = f"""
-        mysql+mysqldb://{mysql_user}:{mysql_password}@{mysql_host}/{mysql_database}
-        """
+        db_uri = f"mysql+mysqldb://{mysql_user}:{mysql_password}@{mysql_host}/{mysql_database}"
 
         # Create the engine with the URI and enable pool_pre_ping
         self.__engine = create_engine(db_uri, pool_pre_ping=True)
@@ -71,7 +69,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        """Create all tables in the db and create the current db session"""
+        """Create all tables in the database and create the current database session"""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session_factory)
